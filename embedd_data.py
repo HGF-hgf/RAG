@@ -6,7 +6,7 @@ from pymongo import MongoClient
 from sklearn.metrics.pairwise import cosine_similarity as cosine
 import os
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Đọc dữ liệu từ CSV
 MONGODB_URI = os.getenv("MONGODB_URI")
