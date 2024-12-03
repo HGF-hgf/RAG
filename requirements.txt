@@ -3,6 +3,6 @@ llama-index-vector-stores-mongodb
 openai
 pymongo
 numpy
-dotenv
-sikit-learn
+python-dotenv
+scikit-learn
 pandas
