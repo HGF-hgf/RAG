@@ -6,11 +6,11 @@ from pymongo import MongoClient
 from sklearn.metrics.pairwise import cosine_similarity as cosine
 import os
 
-# openai.api_key = "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"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
-# # Đọc dữ liệu từ CSV
-# MONGODB_URI = os.getenv("MONGODB_URI")
-# client = MongoClient(MONGODB_URI)
+# Đọc dữ liệu từ CSV
+MONGODB_URI = os.getenv("MONGODB_URI")
+client = MongoClient(MONGODB_URI)
 
 db = client['cellphoneS']
 
