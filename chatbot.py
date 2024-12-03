@@ -11,7 +11,8 @@ llm = OpenAI(model="gpt-4o-mini", temperature=0)
 agent_worker = FunctionCallingAgentWorker.from_tools(
     initial_tools,
     llm=llm,
-    verbose=True
+    system_prompt="""You are a helpful assistant. Answer what the user says. Try to response as short and meaning full as possible, and remove all the bullet points""",
+    verbose=False
 )
 agent = AgentRunner(agent_worker)
 
@@ -28,5 +29,9 @@ best_route = semantic_router.guide(queries)
 print(f"The best matching route for the query is: {best_route[1]} with a score of {best_route[0]}")
 
 # Sử dụng RouterQueryEngine
-response = agent.query(queries)
-print(response)
+# response = agent.query(queries)
+# print(response)
+def get_response(query) -> str:
+    print(query)
+    response = agent.query(query)
+    return str(response)
