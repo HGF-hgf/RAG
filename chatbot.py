@@ -22,11 +22,11 @@ chitchatRoute = Route("chitchat", chitchatSample)
 semantic_router = SemanticRouter([productsRoute, chitchatRoute])
 
 
-queries = "So sanh giua iPhone 13 Pro va Samsung Galaxy S21 Ultra"
+queries = "How is the weather today?"
 
 best_route = semantic_router.guide(queries)
 print(f"The best matching route for the query is: {best_route[1]} with a score of {best_route[0]}")
 
 # Sử dụng RouterQueryEngine
 response = agent.query(queries)
-print(response)
+print(response.text)
