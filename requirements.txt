@@ -1,8 +1,0 @@
-llama-index
-llama-index-vector-stores-mongodb
-openai
-pymongo
-numpy
-python-dotenv
-scikit-learn
-pandas

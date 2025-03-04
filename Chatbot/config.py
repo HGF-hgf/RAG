@@ -9,7 +9,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # MongoDB configuration
-MONGODB_URI = os.getenv("MONGODB_URI")
+MONGODB_URI = os.getenv("MONGODB_URL")
 client = MongoClient(MONGODB_URI)
 db = client['cellphoneS']
 phone_collection = db["phone"]

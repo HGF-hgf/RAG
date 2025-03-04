@@ -7,13 +7,14 @@ from tools import initial_tools
 from config import OPENAI_API_KEY
 from semantic_router import SemanticRouter, Route
 from sample_query import productsSample, chitchatSample
-from STT.EchoAds.Text2Speech.tts import generate_text_to_speech
-from STT.EchoAds.Speech2text.stt import transcribe_audio
+from EchoAds.Text2Speech.tts import generate_text_to_speech
+from EchoAds.Speech2text.stt import transcribe_audio
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File
 import os
 from pydantic import BaseModel
+from datetime import datetime
 
 
 llm = OpenAI(model="gpt-4o-mini", temperature=0)
@@ -40,7 +41,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+app.mount("/static", StaticFiles(directory="/home/nguyen-hoang/rag/RAG/Chatbot"), name="static")
 
 class SpeechRequest(BaseModel):
     text: str
@@ -53,15 +54,19 @@ async def voice_query(audio: UploadFile = File(...)):
 
     text_query = transcribe_audio(temp_audio_path, "vi")
     os.remove(temp_audio_path)  
-    print(text_query, type(text_query))
+    print("Transcribed text:", text_query)
+
     best_route = semantic_router.guide(text_query)
     response = agent.query(text_query)
 
+    audio_file_path = generate_text_to_speech(str(response), "Vietnamese")
+    timestamp = int(datetime.now().timestamp())
     return {
         "transcribed_text": text_query,
         "best_matching_route": best_route[1],
         "score": best_route[0],
         "response": str(response),
+        "audio_file": f"static/response.mp3?{timestamp}" if audio_file_path else None  
     }
 
 @app.post("/speak/")
@@ -70,7 +75,8 @@ async def speak(request: SpeechRequest):
         return {"error": "Text field is required"}
     else: 
         audio_file_path = generate_text_to_speech(request.text, "Vietnamese")
+        print("Generated audio file path:", audio_file_path)
         if audio_file_path:
-            return {"audio_file": audio_file_path}
+            return {"audio_file": "static/response.mp3"}
         else:
             return {"error": "Cannot generate audio file"}
